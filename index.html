@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fluent accordion initialization reproduction</title>
+  </head>
+  <body>
+    <h1>Accordion initialization with an unregistered descendant</h1>
+    <p>
+      This issue depends on browser scheduling. Click “Section”: it may expand normally, or remain
+      unresponsive while Fluent waits for the unregistered
+      <code>&lt;demo-content&gt;</code> element.
+    </p>
+    <fluent-accordion>
+      <fluent-accordion-item>
+        <span slot="heading">Section</span>
+        <demo-content>This content does not need a custom-element registration.</demo-content>
+      </fluent-accordion-item>
+    </fluent-accordion>
+    <p id="status">Waiting for item discovery…</p>
+    <p>
+      Fluent retries while idle callbacks have time remaining. A callback with no time remaining
+      lets initialization complete, so a working accordion means the blocking condition was not
+      sustained on this run. Reloading may produce a different result, but does not guarantee a
+      failure.
+    </p>
+    <p>
+      For a repeatable demonstration, run <code>npm test</code>. Only the automated test supplies
+      controlled idle deadlines; this page uses the browser’s real scheduler.
+    </p>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
